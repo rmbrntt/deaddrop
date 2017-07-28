@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from .models import User
 from django.contrib.auth import authenticate
+from deaddrop.apps.profiles.serializers import ProfileSerializer
+from .models import User
 
 class RegistrationSerializer(serializers.ModelSerializer):
 
@@ -64,26 +66,34 @@ class UserSerializer(serializers.ModelSerializer):
         write_only=True
     )
 
+    profile = ProfileSerializer(write_only=True)
+    image = serializers.CharField(source='profile.image', read_only=True)
+    headline = serializers.CharField(source='profile.headline', read_only=True)
+
     class Meta:
         model = User
-        fields = ('email', 'username', 'password', 'token',)
-
-
+        fields = ('email', 'username', 'password', 'token', 'profile', 'headline', 'image')
         read_only_fields = ('token',)
 
 
     def update(self, instance, validated_data):
 
         password = validated_data.pop('password', None)
+        profile_data = validated_data.pop('profile', {})
+
 
         for (key, value) in validated_data.items():
-
             setattr(instance, key, value)
 
         if password is not None:
-
             instance.set_password(password)
 
         instance.save()
+
+        for (key, value) in profile_data.items():
+             setattr(instance, key, value)
+
+        instance.profile.save()
+
 
         return instance

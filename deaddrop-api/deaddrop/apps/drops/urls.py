@@ -1,6 +1,3 @@
 from django.conf.urls import url
-from .views import DropListCreateAPIView
+from .views import DropViewSet
 
-urlpatterns = [
-    url(r'^drops/?$', DropListCreateAPIView.as_view())
-]
