@@ -26,38 +26,33 @@ const styleSheet = createStyleSheet('DropContainer', theme => ({
   }
 }));
 
-class DropList extends Component {
-  state = {
-    drops: {},
-    dense: false,
-    secondary: true,
-    fetched: false
-  };
+const DropList = (props) => {
 
-  componentDidMount() {
-    dropsClient.getDrops().then((json) => {
-      this.setState({drops: json.drops, fetched: true})
-    });
+  const {dense, secondary, drops, fetched, classes} = props;
+
+  if (!drops) {
+    return (<CircularIndeterminate/>)
   }
 
-  render() {
-    const classes = this.props.classes;
-    const {dense, secondary, drops, fetched} = this.state;
-    {
-      if (!fetched) {
-        return (<CircularIndeterminate/>)
-      } else {
-        return (
-          <div className={classes.listElement}>
-            <List dense={dense}>
-              {drops.map((drop) => <ListItem button>
-                <ListItemText primary={drop.username} secondary={`${drop.lat}, ${drop.lng}`}/>
-              </ListItem>)}
-            </List>
-          </div>
-        )
-      }
-    }
+  if (drops.length === 0) {
+    <Typography type="headline" component="h3">
+      No drops.
+    </Typography>
+  }
+
+  else {
+    return (
+      <div className={classes.listElement}>
+        <List dense={dense}>
+        {
+          drops.map(drop =>
+          <ListItem button>
+            <ListItemText primary={drop.username} secondary={`${drop.lat}, ${drop.lng}`}/>
+          </ListItem>
+        )}
+        </List>
+      </div>
+    )
   }
 }
 

@@ -61,7 +61,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ORIGIN_WHITELIST = (
-    'localhost:3000'
+    'localhost:4100'
 )
 
 ROOT_URLCONF = 'deaddrop.urls'

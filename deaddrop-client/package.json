@@ -7,7 +7,7 @@
     "history": "^4.6.3",
     "isomorphic-fetch": "^2.2.1",
     "marked": "^0.3.6",
-    "material-ui": "^1.0.0-alpha.21",
+    "material-ui": "^1.0.0-beta.2",
     "material-ui-icons": "^1.0.0-alpha.19",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
