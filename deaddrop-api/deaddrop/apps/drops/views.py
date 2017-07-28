@@ -1,6 +1,7 @@
 from rest_framework.response import Response
 from rest_framework import status, mixins, generics, viewsets
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.exceptions import NotFound
 
 from .models import Drop
 from .renderers import DropJSONRenderer
@@ -51,6 +52,27 @@ class DropViewSet(mixins.CreateModelMixin,
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+    def update(self, request, id):
 
+        try:
+            serializer_instance = self.queryset.get(id=id)
 
+        except Drop.DoesNotExist:
+            raise NotFound('A drop with this id does not exist.')
+
+        serializer_data = request.data.get('drop', {})
+        serializer = self.serializer_class(serializer_instance, serializer_data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def retrieve(self, request, id):
+
+        try:
+            serializer_instance = self.queryset.get(id=id)
+        except Drop.DoesNotExist:
+            raise NotFound('A drop with this id does not exist.')
+
+        serializer = self.serializer_class(serializer_instance)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
