@@ -2,6 +2,7 @@ from django.db import models
 from deaddrop.apps.core.models import TimestampedModel
 # Create your models here.
 
+
 class Profile(TimestampedModel):
 
     user = models.OneToOneField('authentication.User', on_delete=models.CASCADE)

@@ -8,6 +8,7 @@ from .models import Profile
 from .renderers import ProfileRenderer
 from .serializers import ProfileSerializer
 
+
 class ProfileRetrieveAPIView(RetrieveAPIView):
 
     queryset = Profile.objects.select_related('user')
@@ -15,11 +16,9 @@ class ProfileRetrieveAPIView(RetrieveAPIView):
     renderer_classes = (ProfileRenderer,)
     serializer_class = ProfileSerializer
 
-
     def retrieve(self, request, username, *args, **kwargs):
 
         try:
-
             profile = self.queryset.get(user__username=username)
 
         except Profile.DoesNotExist:
