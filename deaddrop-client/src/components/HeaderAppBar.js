@@ -20,7 +20,7 @@ const styleSheet = createStyleSheet('HeaderAppBar', {
   },
 });
 
-function HeaderAppBar(props) {
+const HeaderAppBar = (props) => {
   const classes = props.classes;
   return (
     <div className={classes.root}>
@@ -30,6 +30,7 @@ function HeaderAppBar(props) {
             <MenuIcon />
           </IconButton>
           <Typography type="title" color="inherit" className={classes.flex}>
+            {props.appName}
           </Typography>
         </Toolbar>
       </AppBar>

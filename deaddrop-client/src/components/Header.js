@@ -4,7 +4,7 @@ import HeaderAppBar from './HeaderAppBar';
 export default class Header extends Component {
   render(){
     return (
-      <HeaderAppBar />
+      <HeaderAppBar appName={this.props.appName}/>
     )
   }
 }
