@@ -27,12 +27,16 @@ from .serializers import DropSerializer
 #         serializer.save()
 #         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-class DropViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
+class DropViewSet(mixins.CreateModelMixin,
+                  mixins.ListModelMixin,
+                  mixins.RetrieveModelMixin,
+                  viewsets.GenericViewSet):
 
     queryset = Drop.objects.select_related('agent', 'agent__user')
     permission_classes = (IsAuthenticatedOrReadOnly,)
     renderer_classes = (DropJSONRenderer,)
     serializer_class = DropSerializer
+    lookup_field = 'id'
 
     def create(self, request, *args, **kwargs):
 
@@ -46,6 +50,7 @@ class DropViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
 
 
 

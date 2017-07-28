@@ -21,4 +21,5 @@ urlpatterns = [
     url(r'^api/', include('deaddrop.apps.authentication.urls', namespace='authentication')),
     url(r'^api/', include('deaddrop.apps.drops.urls', namespace='drops')),
     url(r'^api/', include('deaddrop.apps.profiles.urls', namespace='profiles')),
+
 ]

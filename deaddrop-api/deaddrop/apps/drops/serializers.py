@@ -36,3 +36,5 @@ class DropSerializer(serializers.ModelSerializer):
     def get_updated_at(self, instance):
         return instance.updated_at.isoformat()
 
+
+
