@@ -3,6 +3,7 @@ import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
 import Typography from 'material-ui/Typography';
 import DropList from '../DropList';
+import Map from '../Map';
 import { withStyles, createStyleSheet } from 'material-ui/styles';
 
 const styleSheet = createStyleSheet('MainView', theme => ({
@@ -32,9 +33,7 @@ const MainView = (props) => {
           <Typography type="headline" component="h3">
             DropLocator
           </Typography>
-          <Typography type="body1" component="p">
-          Body
-          </Typography>
+          <Map />
         </Paper>
       </Grid>
     </Grid>
