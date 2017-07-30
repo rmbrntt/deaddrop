@@ -58,8 +58,7 @@ class UserRetrieveUpdateAPIView(RetrieveUpdateAPIView):
             'user': user_data.get('username', request.user.username),
             'email': user_data.get('email', request.user.email),
             'profile': {
-                'headline': user_data.get('headline', request.user.profile.headline),
-                'image': user_data.get('image', request.user.profile.image)
+                'headline': user_data.get('headline', request.user.profile.headline)
             }
         }
 

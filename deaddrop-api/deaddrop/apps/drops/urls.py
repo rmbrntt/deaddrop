@@ -8,5 +8,5 @@ router = DefaultRouter(trailing_slash=False)
 router.register(r'drops', DropViewSet)
 
 urlpatterns = [
-    url(r'^', include(router.urls)),
+    url(r'^', include(router.urls))
 ]

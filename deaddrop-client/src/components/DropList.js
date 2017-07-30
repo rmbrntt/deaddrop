@@ -41,16 +41,18 @@ const DropList = (props) => {
       <div className={classes.listElement}>
         <List dense={dense}>
         {
-          drops.map(drop =>
+          drops.map(drop => {
+            const createdAt = new Date(drop.createdAt)
+            return (
           <ListItem button>
-            <ListItemText primary={drop.title} secondary={drop.description} />
+            <ListItemText primary={drop.title} secondary={`Created: ${createdAt.toDateString()}`} />
             <ListItemSecondaryAction>
               <IconButton aria-label="Info">
                 <InfoOutlineIcon />
               </IconButton>
             </ListItemSecondaryAction>
           </ListItem>
-        )}
+        )})}
         </List>
       </div>
     )

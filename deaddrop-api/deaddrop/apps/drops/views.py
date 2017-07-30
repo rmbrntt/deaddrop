@@ -31,6 +31,7 @@ from .serializers import DropSerializer
 class DropViewSet(mixins.CreateModelMixin,
                   mixins.ListModelMixin,
                   mixins.RetrieveModelMixin,
+                  mixins.DestroyModelMixin,
                   viewsets.GenericViewSet):
 
     queryset = Drop.objects.select_related('agent', 'agent__user')
@@ -38,6 +39,14 @@ class DropViewSet(mixins.CreateModelMixin,
     renderer_classes = (DropJSONRenderer,)
     serializer_class = DropSerializer
     lookup_field = 'id'
+
+    def _check_exists(self, id):
+        try:
+            serializer_instance = self.queryset.get(id=id)
+            return serializer_instance
+
+        except Drop.DoesNotExist:
+            raise NotFound('A drop with this id does not exist.')
 
     def create(self, request, *args, **kwargs):
 
@@ -54,11 +63,7 @@ class DropViewSet(mixins.CreateModelMixin,
 
     def update(self, request, id):
 
-        try:
-            serializer_instance = self.queryset.get(id=id)
-
-        except Drop.DoesNotExist:
-            raise NotFound('A drop with this id does not exist.')
+        serializer_instance = self._check_exists(id)
 
         serializer_data = request.data.get('drop', {})
         serializer = self.serializer_class(serializer_instance, serializer_data, partial=True)
@@ -68,11 +73,14 @@ class DropViewSet(mixins.CreateModelMixin,
 
     def retrieve(self, request, id):
 
-        try:
-            serializer_instance = self.queryset.get(id=id)
-        except Drop.DoesNotExist:
-            raise NotFound('A drop with this id does not exist.')
-
+        serializer_instance = self._check_exists(id)
         serializer = self.serializer_class(serializer_instance)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+    def destroy(self, request, id, *args, **kwargs):
+        drop = self._check_exists(id)
+        drop.delete()
+        return Response(None, status=status.HTTP_204_NO_CONTENT)
+
 

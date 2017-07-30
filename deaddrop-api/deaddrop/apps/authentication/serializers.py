@@ -67,12 +67,11 @@ class UserSerializer(serializers.ModelSerializer):
     )
 
     profile = ProfileSerializer(write_only=True)
-    image = serializers.CharField(source='profile.image', read_only=True)
     headline = serializers.CharField(source='profile.headline', read_only=True)
 
     class Meta:
         model = User
-        fields = ('email', 'username', 'password', 'token', 'profile', 'headline', 'image')
+        fields = ('email', 'username', 'password', 'token', 'profile', 'headline')
         read_only_fields = ('token',)
 
 

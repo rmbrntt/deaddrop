@@ -55,7 +55,7 @@ const AsyncGoogleMap = _.flowRight(
             <div>
               <strong>{marker.title}</strong>
               <br />
-              <em>{marker.description}</em>
+              <em>{marker.message}</em>
             </div>
           </InfoWindow>
 
@@ -93,7 +93,7 @@ export default class Map extends Component {
       key: "default",
       defaultAnimation: 2,
       title: "title",
-      description: "description",
+      message: "message",
     }],
     snackbarOpen: false,
     snackbarVertical: null,
@@ -132,7 +132,7 @@ export default class Map extends Component {
         defaultAnimation: 2,
         key: Date.now(),
         title: "title",
-        description: "just another marker",
+        message: "just another drop",
         showInfo: false,
       },
     ];
@@ -152,10 +152,6 @@ export default class Map extends Component {
       title: "Delete drop marker?",
       content: "This will remove the drop location from the map.",
     }})
-    // const nextMarkers = this.state.markers.filter(marker => marker !== targetMarker);
-    // this.setState({
-    //   markers: nextMarkers,
-    // });
   }
 
   handleMarkerClick(targetMarker) {
@@ -191,7 +187,11 @@ handleCloseClick(targetMarker) {
   };
 
   handleDialogConfirm(){
-
+    //TODO add an agent delete call
+    // const nextMarkers = this.state.markers.filter(marker => marker !== targetMarker);
+    // this.setState({
+    //   markers: nextMarkers,
+    // });
   }
 
   handleDialogClose = () => {
@@ -242,8 +242,7 @@ handleCloseClick(targetMarker) {
 
 
   componentWillReceiveProps(nextProps) {
-    const dropMarkers = nextProps.drops.map(
-      drop => (
+    const dropMarkers = nextProps.drops.map(drop => (
            {
             position: {
               lat: parseFloat(drop.lat),
@@ -252,7 +251,7 @@ handleCloseClick(targetMarker) {
             defaultAnimation: 2,
             key: drop.id,
             title: drop.title,
-            description: drop.description,
+            message: drop.message,
             showInfo: false,
           }
     ));

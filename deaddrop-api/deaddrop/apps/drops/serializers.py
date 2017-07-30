@@ -10,6 +10,7 @@ class DropSerializer(serializers.ModelSerializer):
     lng = serializers.DecimalField(max_digits=10, decimal_places=7)
     createdAt = serializers.SerializerMethodField(method_name='get_created_at')
     updatedAt = serializers.SerializerMethodField(method_name='get_updated_at')
+    dropsCount = serializers.SerializerMethodField(method_name='get_drops_count')
 
     class Meta:
         model = Drop
@@ -18,12 +19,11 @@ class DropSerializer(serializers.ModelSerializer):
             'lat',
             'agent',
             'title',
-            'description',
             'createdAt',
             'updatedAt',
             'id',
-            'signal',
-            'message'
+            'message',
+            'dropsCount'
         )
 
     def create(self, validated_data):
@@ -35,6 +35,9 @@ class DropSerializer(serializers.ModelSerializer):
 
     def get_updated_at(self, instance):
         return instance.updated_at.isoformat()
+
+    def get_drops_count(self, instance):
+        return Drop.objects.count()
 
 
 
