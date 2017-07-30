@@ -23,7 +23,7 @@ class DropSerializer(serializers.ModelSerializer):
             'updatedAt',
             'id',
             'signal',
-            'covert_message'
+            'message'
         )
 
     def create(self, validated_data):

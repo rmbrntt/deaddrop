@@ -6,21 +6,21 @@ import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
 import Typography from 'material-ui/Typography';
 
-import LandingBlock from './LandingBlock';
-import MainView from './MainView';
+import HomeSplash from './HomeSplash';
+import HomeView from './HomeView';
 import agent from '../../agent';
 
-const styleSheet = createStyleSheet('Home', theme => ({
+const styleSheet = createStyleSheet('HomeContainer', theme => ({
   root: {
     flexGrow: 1,
-    marginTop: 0,
   }
 }));
 
 const Promise = global.Promise;
 
 const mapStateToProps = state => ({
-  appName: state.appName
+  appName: state.appName,
+  drops: state.drops,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -28,7 +28,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch({ type: 'HOME_LOADED', payload }),
 });
 
-class Home extends React.Component {
+class HomeContainer extends React.Component {
 
   componentWillMount() {
     this.props.onLoad(agent.Drops.all());
@@ -38,16 +38,16 @@ class Home extends React.Component {
     const classes = this.props.classes;
     return (
       <div className={classes.root}>
-        <LandingBlock appName={this.props.appName} />
-        <MainView />
+        <HomeSplash appName={this.props.appName} />
+        <HomeView drops={this.props.drops}/>
       </div>
     );
   }
 }
 
 
-Home.propTypes = {
+HomeContainer.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styleSheet)(Home));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styleSheet)(HomeContainer));

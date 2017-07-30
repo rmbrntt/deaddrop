@@ -8,7 +8,7 @@ class Drop(TimestampedModel):
     title = models.CharField(max_length=35)
     description = models.TextField()
     signal = models.CharField(max_length=20)
-    covert_message = models.TextField()
+    message = models.TextField()
     lat = models.DecimalField(max_digits=9, decimal_places=7)
     lng = models.DecimalField(max_digits=10, decimal_places=7)
     agent = models.ForeignKey('profiles.Profile', on_delete=models.CASCADE, related_name='drops')

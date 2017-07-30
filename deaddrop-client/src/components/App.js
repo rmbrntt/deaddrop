@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import Home from './Home/index';
-import Header from './Header';
-
+import HomeContainer from './Home/HomeContainer';
+import HeaderContainer from './HeaderContainer';
 import { createStore } from 'redux';
 import { connect } from 'react-redux';
 
@@ -14,8 +13,8 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Header appName={this.props.appName}/>
-        <Home />
+        <HeaderContainer appName={this.props.appName}/>
+        <HomeContainer />
       </div>
     );
   }

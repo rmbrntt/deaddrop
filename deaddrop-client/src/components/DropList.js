@@ -9,26 +9,22 @@ import {FormGroup} from 'material-ui/Form';
 import {LabelCheckbox} from 'material-ui/Checkbox';
 import Grid from 'material-ui/Grid';
 import Typography from 'material-ui/Typography';
-import FolderIcon from 'material-ui-icons/Folder';
-import DeleteIcon from 'material-ui-icons/Delete';
+import InfoOutlineIcon from 'material-ui-icons/InfoOutline';
 import CircularIndeterminate from './CircularIndeterminate';
 
-const styleSheet = createStyleSheet('DropContainer', theme => ({
+const styleSheet = createStyleSheet('DropList', theme => ({
   root: {
     flexGrow: 1,
-    maxWidth: 752
+    maxWidth: 500
   },
   listElement: {
     background: theme.palette.background.paper
   },
-  title: {
-    margin: `${theme.spacing.unit * 4}px 0 ${theme.spacing.unit * 2}px`
-  }
+
 }));
 
 const DropList = (props) => {
-
-  const {dense, secondary, drops, fetched, classes} = props;
+  const {dense, secondary, drops, classes} = props;
 
   if (!drops) {
     return (<CircularIndeterminate/>)
@@ -47,7 +43,12 @@ const DropList = (props) => {
         {
           drops.map(drop =>
           <ListItem button>
-            <ListItemText primary={drop.username} secondary={`${drop.lat}, ${drop.lng}`}/>
+            <ListItemText primary={drop.title} secondary={drop.description} />
+            <ListItemSecondaryAction>
+              <IconButton aria-label="Info">
+                <InfoOutlineIcon />
+              </IconButton>
+            </ListItemSecondaryAction>
           </ListItem>
         )}
         </List>

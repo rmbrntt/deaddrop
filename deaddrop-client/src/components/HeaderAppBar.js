@@ -9,10 +9,12 @@ import Typography from 'material-ui/Typography';
 import Button from 'material-ui/Button';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui-icons/Menu';
+import PublicIcon from 'material-ui-icons/Public'
 
 const styleSheet = createStyleSheet('HeaderAppBar', {
   root: {
     marginTop: 0,
+    paddingTop: 75,
     width: '100%',
   },
   flex: {
@@ -24,10 +26,10 @@ const HeaderAppBar = (props) => {
   const classes = props.classes;
   return (
     <div className={classes.root}>
-      <AppBar position="static" elevation={1}>
+      <AppBar position="fixed" elevation={3}>
         <Toolbar>
           <IconButton color="contrast" aria-label="Menu">
-            <MenuIcon />
+            <PublicIcon />
           </IconButton>
           <Typography type="title" color="inherit" className={classes.flex}>
             {props.appName}

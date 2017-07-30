@@ -14,9 +14,7 @@ const styleSheet = createStyleSheet('CircularIndeterminate', theme => ({
 function CircularIndeterminate(props) {
   const classes = props.classes;
   return (
-    <div>
       <CircularProgress mode="indeterminate" className={classes.progress} size={50} />
-    </div>
   );
 }
 

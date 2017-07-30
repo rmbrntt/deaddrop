@@ -2,6 +2,7 @@ import {config} from '../config';
 import _ from "lodash";
 import Snackbar from 'material-ui/Snackbar';
 import CircularIndeterminate from './CircularIndeterminate';
+import AlertDialog from './AlertDialog';
 import {
   default as React,
   Component,
@@ -12,24 +13,73 @@ import {
   withGoogleMap,
   GoogleMap,
   Marker,
+  InfoWindow,
+  Circle
 } from "react-google-maps";
+import canUseDOM from "can-use-dom";
+import raf from "raf";
+
+
+const geolocation = (
+  canUseDOM && navigator.geolocation ?
+  navigator.geolocation :
+  ({
+    getCurrentPosition(success, failure) {
+      failure(`Your browser doesn't support geolocation.`);
+    },
+  })
+);
 
 const AsyncGoogleMap = _.flowRight(
   withScriptjs,
   withGoogleMap,
 )(props => (
   <GoogleMap
-    ref={props.onMapLoad}
-    defaultZoom={3}
-    defaultCenter={{ lat: -25.363882, lng: 131.044922 }}
+    defaultZoom={12}
     onClick={props.onMapClick}
+    center={props.center}
   >
-    {props.markers.map(marker => (
-      <Marker
-        {...marker}
-        onRightClick={() => props.onMarkerRightClick(marker)}
+
+    {props.markers.map(marker => {
+      const onCloseClick = () => props.onCloseClick(marker);
+
+      return (
+        <Marker
+          {...marker}
+          onRightClick={() => props.onMarkerRightClick(marker)}
+          onClick={() => props.onMarkerClick(marker)}
+
+        >
+        {marker.showInfo && (
+          <InfoWindow onCloseClick={onCloseClick}>
+            <div>
+              <strong>{marker.title}</strong>
+              <br />
+              <em>{marker.description}</em>
+            </div>
+          </InfoWindow>
+
+        )}
+      </Marker>
+    )})}
+    {props.center && (
+      <InfoWindow position={props.center}>
+        <div>{props.content}</div>
+      </InfoWindow>
+    )}
+    {props.center && (
+      <Circle
+        center={props.center}
+        radius={props.radius}
+        options={{
+          fillColor: `red`,
+          fillOpacity: 0.20,
+          strokeColor: `red`,
+          strokeOpacity: 1,
+          strokeWeight: 1,
+        }}
       />
-    ))}
+    )}
   </GoogleMap>
 ));
 
@@ -37,20 +87,35 @@ export default class Map extends Component {
   state = {
     markers: [{
       position: {
-        lat: 25.0112183,
-        lng: 121.52067570000001,
+        lat: 0,
+        lng: 0,
       },
-      key: `Taiwan`,
+      key: "default",
       defaultAnimation: 2,
+      title: "title",
+      description: "description",
     }],
     snackbarOpen: false,
     snackbarVertical: null,
     snackbarHorizontal: null,
+    snackbarMessage: null,
+    center: null,
+    content: null,
+    radius: 6000,
+    dialog: {
+      open: false,
+      title: "",
+      content: "",
+    }
   }
+
+  isUnmounted = false;
 
   handleMapLoad = this.handleMapLoad.bind(this);
   handleMapClick = this.handleMapClick.bind(this);
   handleMarkerRightClick = this.handleMarkerRightClick.bind(this);
+  handleMarkerClick = this.handleMarkerClick.bind(this);
+  handleCloseClick = this.handleCloseClick.bind(this);
 
   handleMapLoad(map) {
     this._mapComponent = map;
@@ -66,6 +131,9 @@ export default class Map extends Component {
         position: event.latLng,
         defaultAnimation: 2,
         key: Date.now(),
+        title: "title",
+        description: "just another marker",
+        showInfo: false,
       },
     ];
     this.setState({
@@ -73,20 +141,130 @@ export default class Map extends Component {
     });
 
     if (nextMarkers.length === 3) {
-      this.setState({ snackbarOpen: true })
+      this.setState({ snackbarOpen: true, snackbarMessage: 'Right click a marker to delete.' })
     }
   }
 
   handleMarkerRightClick(targetMarker) {
-    const nextMarkers = this.state.markers.filter(marker => marker !== targetMarker);
     this.setState({
-      markers: nextMarkers,
-    });
+      dialog: {
+      open: true,
+      title: "Delete drop marker?",
+      content: "This will remove the drop location from the map.",
+    }})
+    // const nextMarkers = this.state.markers.filter(marker => marker !== targetMarker);
+    // this.setState({
+    //   markers: nextMarkers,
+    // });
   }
+
+  handleMarkerClick(targetMarker) {
+  this.setState({
+    markers: this.state.markers.map(marker => {
+      if (marker === targetMarker) {
+        return {
+          ...marker,
+          showInfo: true,
+        };
+      }
+      return marker;
+    }),
+  });
+}
+
+handleCloseClick(targetMarker) {
+  this.setState({
+    markers: this.state.markers.map(marker => {
+      if (marker === targetMarker) {
+        return {
+          ...marker,
+          showInfo: false,
+        };
+      }
+      return marker;
+    }),
+  });
+}
 
   handleSnackbarClose = () => {
     this.setState({ snackbarOpen: false });
   };
+
+  handleDialogConfirm(){
+
+  }
+
+  handleDialogClose = () => {
+    this.setState({ dialog: {...this.state.dialog, open: false}})
+  };
+
+  componentDidMount() {
+    const tick = () => {
+      if (this.isUnmounted) {
+        return;
+      }
+      this.setState({ radius: Math.max(this.state.radius - 100, 0) });
+
+      if (this.state.radius > 5) {
+        raf(tick);
+      }
+    };
+    geolocation.getCurrentPosition((position) => {
+      if (this.isUnmounted) {
+        return;
+      }
+      this.setState({
+        center: {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        },
+        snackbarOpen: true,
+        snackbarMessage: 'Location found.',
+        content: "You."
+      });
+
+      raf(tick);
+
+    }, (reason) => {
+      if (this.isUnmounted) {
+        return;
+      }
+      this.setState({
+        center: {
+          lat: 60,
+          lng: 105,
+        },
+        snackbarOpen: true,
+        snackbarMessage: `Error: The Geolocation service failed (${reason}).`,
+      });
+    });
+  }
+
+
+  componentWillReceiveProps(nextProps) {
+    const dropMarkers = nextProps.drops.map(
+      drop => (
+           {
+            position: {
+              lat: parseFloat(drop.lat),
+              lng: parseFloat(drop.lng),
+            },
+            defaultAnimation: 2,
+            key: drop.id,
+            title: drop.title,
+            description: drop.description,
+            showInfo: false,
+          }
+    ));
+      this.setState({
+        markers: dropMarkers,
+    });
+    }
+
+
+  componentWillUnmount() {
+    this.isUnmounted = true;
+  }
 
   render() {
     return (
@@ -98,25 +276,38 @@ export default class Map extends Component {
           SnackbarContentProps={{
             'aria-describedby': 'message-id',
           }}
-          message={<span id="message-id">Right click a marker to delete.</span>}
+          message={<span id="message-id">{this.state.snackbarMessage}</span>}
+        />
+
+        <AlertDialog
+          open={this.state.dialog.open}
+          title={this.state.dialog.title}
+          content={this.state.dialog.content}
+          handleDialogConfirm={this.handleDialogConfirm}
+          handleDialogClose={this.handleDialogClose}
         />
         <AsyncGoogleMap
           googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${config.GOOGLE_MAPS_API_KEY}`}
           loadingElement={
-            <div style={{ height: `500px` }}>
+            <div style={{ height: `100%` }}>
               <CircularIndeterminate />
              </div>
           }
           containerElement={
-            <div style={{ height: `500px` }} />
+            <div style={{ height: `100%` }} />
           }
           mapElement={
-            <div style={{ height: `500px` }} />
+            <div style={{ height: `75vh` }} />
           }
           onMapLoad={this.handleMapLoad}
           onMapClick={this.handleMapClick}
           markers={this.state.markers}
           onMarkerRightClick={this.handleMarkerRightClick}
+          onMarkerClick={this.handleMarkerClick}
+          onCloseClick={this.handleCloseClick}
+          center={this.state.center}
+          content={this.state.content}
+          radius={this.state.radius}
         />
       </div>
 

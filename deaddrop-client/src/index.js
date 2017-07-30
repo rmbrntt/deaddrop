@@ -6,7 +6,8 @@ import registerServiceWorker from './registerServiceWorker';
 import 'typeface-roboto'
 import { MuiThemeProvider } from 'material-ui/styles';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
+import { promiseMiddleware } from './middleware';
 
 const defaultState = {
   appName: 'deaddrop',
@@ -14,10 +15,14 @@ const defaultState = {
 };
 
 const reducer = function(state = defaultState, action) {
+  switch (action.type){
+    case 'HOME_LOADED':
+    return {...state, drops: action.payload.drops }
+  }
   return state;
 };
 
-const store = createStore(reducer);
+const store = createStore(reducer, applyMiddleware(promiseMiddleware));
 
 function Root() {
   return (

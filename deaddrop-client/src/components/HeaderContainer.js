@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import HeaderAppBar from './HeaderAppBar';
 
-export default class Header extends Component {
+export default class HeaderContainer extends Component {
   render(){
     return (
       <HeaderAppBar appName={this.props.appName}/>
