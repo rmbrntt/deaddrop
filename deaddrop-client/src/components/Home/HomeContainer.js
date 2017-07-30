@@ -34,6 +34,18 @@ class HomeContainer extends React.Component {
     this.props.onLoad(agent.Drops.all());
   }
 
+  handleUpdate(){
+
+  }
+
+  handleDelete(){
+
+  }
+
+  handleCreate(){
+
+  }
+
   render(){
     const classes = this.props.classes;
     return (

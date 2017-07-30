@@ -146,12 +146,15 @@ export default class Map extends Component {
   }
 
   handleMarkerRightClick(targetMarker) {
+    //console.log(targetMarker)
     this.setState({
       dialog: {
       open: true,
       title: "Delete drop marker?",
       content: "This will remove the drop location from the map.",
-    }})
+    },
+      activeMarker: targetMarker,
+  })
   }
 
   handleMarkerClick(targetMarker) {
@@ -282,7 +285,7 @@ handleCloseClick(targetMarker) {
           open={this.state.dialog.open}
           title={this.state.dialog.title}
           content={this.state.dialog.content}
-          handleDialogConfirm={this.handleDialogConfirm}
+          activeMarker={this.state.activeMarker}
           handleDialogClose={this.handleDialogClose}
         />
         <AsyncGoogleMap

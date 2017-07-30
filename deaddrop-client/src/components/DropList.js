@@ -1,4 +1,3 @@
-import {dropsClient} from '../DropClient';
 import React, {Component, cloneElement} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles, createStyleSheet} from 'material-ui/styles';
@@ -8,8 +7,10 @@ import IconButton from 'material-ui/IconButton';
 import {FormGroup} from 'material-ui/Form';
 import {LabelCheckbox} from 'material-ui/Checkbox';
 import Grid from 'material-ui/Grid';
+import Paper from 'material-ui/Paper';
 import Typography from 'material-ui/Typography';
 import InfoOutlineIcon from 'material-ui-icons/InfoOutline';
+import AnnouncementIcon from 'material-ui-icons/Announcement';
 import CircularIndeterminate from './CircularIndeterminate';
 
 const styleSheet = createStyleSheet('DropList', theme => ({
@@ -20,20 +21,37 @@ const styleSheet = createStyleSheet('DropList', theme => ({
   listElement: {
     background: theme.palette.background.paper
   },
+  noDropsPaper: {
+    textAlign: 'left',
+    padding: 10,
+    minHeight: '100%',
+    minWidth: '100%',
+    verticalAlign: 'center',
+    display: 'flex'
+  },
 
 }));
 
 const DropList = (props) => {
   const {dense, secondary, drops, classes} = props;
 
+
+
   if (!drops) {
     return (<CircularIndeterminate/>)
   }
 
-  if (drops.length === 0) {
-    <Typography type="headline" component="h3">
-      No drops.
-    </Typography>
+  if (Object.keys(drops).length === 0) {
+    return (
+      <Paper className={classes.noDropsPaper}>
+
+        <Typography component="span">
+
+          There are no marked drops, add one to the map.
+        </Typography>
+
+      </Paper>
+)
   }
 
   else {
