@@ -38,8 +38,9 @@ class HomeContainer extends React.Component {
   }
 
   handleDropItemClick = (e) => {
-    const lat = (e.target).closest("li").attributes.getNamedItem('data-lat').value
-    const lng = (e.target).closest("li").attributes.getNamedItem('data-lng').value
+    const ele = (e.target).closest("li");
+    const lat = ele.attributes.getNamedItem('data-lat').value;
+    const lng = ele.attributes.getNamedItem('data-lng').value;
     this.setState({ center: { lat: parseFloat(lat), lng: parseFloat(lng) }})
   }
 

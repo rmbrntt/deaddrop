@@ -35,7 +35,7 @@ const AsyncGoogleMap = _.flowRight(
   withGoogleMap,
 )(props => (
   <GoogleMap
-    defaultZoom={12}
+    defaultZoom={13}
     onClick={props.onMapClick}
     center={props.center}
   >
