@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import Drop
 from deaddrop.apps.profiles.serializers import ProfileSerializer
 
+
 class DropSerializer(serializers.ModelSerializer):
 
     agent = ProfileSerializer(read_only=True)

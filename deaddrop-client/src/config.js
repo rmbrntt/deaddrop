@@ -1,3 +1,4 @@
-const config = {
-  GOOGLE_MAPS_API_KEY: "<api_key>"
+export const config = {
+  GOOGLE_MAPS_API_KEY: "AIzaSyBbT5zfCrNC01POwp2UVgA4qzYQWcTg578",
+  AUTH_TOKEN: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNTA2NjkwOTkxfQ.odoWkCQMaTwKkyEAmgYKfIWD99U91zzO2hMBm-zIz3U",
 }

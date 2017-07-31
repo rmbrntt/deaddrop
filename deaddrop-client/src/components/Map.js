@@ -5,9 +5,9 @@ import CircularIndeterminate from './CircularIndeterminate';
 import AlertDialog from './AlertDialog';
 import {
   default as React,
-  Component,
-  PropTypes,
+  Component
 } from "react";
+import PropTypes from 'prop-types';
 import withScriptjs from 'react-google-maps/lib/async/withScriptjs';
 import {
   withGoogleMap,
@@ -17,7 +17,8 @@ import {
   Circle
 } from "react-google-maps";
 import canUseDOM from "can-use-dom";
-import raf from "raf";
+
+
 
 
 const geolocation = (
@@ -64,19 +65,6 @@ const AsyncGoogleMap = _.flowRight(
       <InfoWindow position={props.center}>
         <div>{props.content}</div>
       </InfoWindow>
-    )}
-    {props.center && (
-      <Circle
-        center={props.center}
-        radius={props.radius}
-        options={{
-          fillColor: `red`,
-          fillOpacity: 0.20,
-          strokeColor: `red`,
-          strokeOpacity: 1,
-          strokeWeight: 1,
-        }}
-      />
     )}
   </GoogleMap>
 ));
@@ -190,16 +178,6 @@ handleCloseClick(targetMarker) {
   };
 
   componentDidMount() {
-    const tick = () => {
-      if (this.isUnmounted) {
-        return;
-      }
-      this.setState({ radius: Math.max(this.state.radius - 100, 0) });
-
-      if (this.state.radius > 5) {
-        raf(tick);
-      }
-    };
     geolocation.getCurrentPosition((position) => {
       if (this.isUnmounted) {
         return;
@@ -214,7 +192,7 @@ handleCloseClick(targetMarker) {
         content: "You."
       });
 
-      raf(tick);
+
 
     }, (reason) => {
       if (this.isUnmounted) {

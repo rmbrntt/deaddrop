@@ -1,13 +1,12 @@
 import superagentPromise from 'superagent-promise';
 import _superagent from 'superagent';
-import { config } from "./config";
+import {config} from "./config";
 
 const superagent = superagentPromise(_superagent, global.Promise);
 
 const API_ROOT = 'http://localhost:8000/api';
 const responseBody = res => res.body;
 
-//temporarily using known token until auth can be implemented
 let token = config.AUTH_TOKEN;
 const tokenPlugin = req => {
   if (token) {

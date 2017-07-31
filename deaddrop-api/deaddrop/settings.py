@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     'deaddrop.apps.authentication',
     'deaddrop.apps.profiles',
     'deaddrop.apps.drops',
-
 ]
 
 MIDDLEWARE = [
@@ -141,5 +140,6 @@ REST_FRAMEWORK = {
     'NON_FIELD_ERRORS': 'error',
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'deaddrop.apps.authentication.backends.JWTAuthentication',
-    )
+    ),
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json'
 }
