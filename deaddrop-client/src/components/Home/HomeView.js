@@ -15,6 +15,7 @@ const styleSheet = createStyleSheet('HomeView', theme => ({
   paperRight: {
     padding: 3,
     color: theme.palette.text.secondary,
+    marginRight: 15,
   },
 }));
 
@@ -23,12 +24,12 @@ const HomeView = (props) => {
     <Grid container gutter={8}>
       <Grid item xs={6} sm={3}>
         <Paper className={props.classes.paperLeft} elevation={0}>
-            <DropList drops={props.drops}/>
+            <DropList drops={props.drops} handleDropItemClick={(e) => props.handleDropItemClick(e)}/>
         </Paper>
       </Grid>
       <Grid item xs={18} sm={9}>
         <Paper className={props.classes.paperRight} elevation={10}>
-          <Map drops={props.drops}/>
+          <Map drops={props.drops} center={props.center}/>
         </Paper>
       </Grid>
     </Grid>

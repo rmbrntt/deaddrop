@@ -29,21 +29,18 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class HomeContainer extends React.Component {
+  state = {
+    center: null
+  }
 
   componentWillMount() {
     this.props.onLoad(agent.Drops.all());
   }
 
-  handleUpdate(){
-
-  }
-
-  handleDelete(){
-
-  }
-
-  handleCreate(){
-
+  handleDropItemClick = (e) => {
+    const lat = (e.target).closest("li").attributes.getNamedItem('data-lat').value
+    const lng = (e.target).closest("li").attributes.getNamedItem('data-lng').value
+    this.setState({ center: { lat: parseFloat(lat), lng: parseFloat(lng) }})
   }
 
   render(){
@@ -51,7 +48,7 @@ class HomeContainer extends React.Component {
     return (
       <div className={classes.root}>
         <HomeSplash appName={this.props.appName} />
-        <HomeView drops={this.props.drops}/>
+        <HomeView drops={this.props.drops} handleDropItemClick={(e) => this.handleDropItemClick(e)} center={this.state.center}/>
       </div>
     );
   }

@@ -48,8 +48,7 @@ const AsyncGoogleMap = _.flowRight(
           {...marker}
           onRightClick={() => props.onMarkerRightClick(marker)}
           onClick={() => props.onMarkerClick(marker)}
-
-        >
+          >
         {marker.showInfo && (
           <InfoWindow onCloseClick={onCloseClick}>
             <div>
@@ -58,7 +57,6 @@ const AsyncGoogleMap = _.flowRight(
               <em>{marker.message}</em>
             </div>
           </InfoWindow>
-
         )}
       </Marker>
     )})}
@@ -99,30 +97,27 @@ export default class Map extends Component {
     snackbarVertical: null,
     snackbarHorizontal: null,
     snackbarMessage: null,
-    center: null,
+    center: this.props.center || null,
     content: null,
     radius: 6000,
     dialog: {
       open: false,
       title: "",
       content: "",
+    },
+    addDropForm: {
+      open: false,
     }
   }
 
   isUnmounted = false;
 
-  handleMapLoad = this.handleMapLoad.bind(this);
   handleMapClick = this.handleMapClick.bind(this);
   handleMarkerRightClick = this.handleMarkerRightClick.bind(this);
   handleMarkerClick = this.handleMarkerClick.bind(this);
   handleCloseClick = this.handleCloseClick.bind(this);
 
-  handleMapLoad(map) {
-    this._mapComponent = map;
-    if (map) {
-      console.log(map.getZoom());
-    }
-  }
+
 
   handleMapClick(event) {
     const nextMarkers = [
@@ -189,13 +184,6 @@ handleCloseClick(targetMarker) {
     this.setState({ snackbarOpen: false });
   };
 
-  handleDialogConfirm(){
-    //TODO add an agent delete call
-    // const nextMarkers = this.state.markers.filter(marker => marker !== targetMarker);
-    // this.setState({
-    //   markers: nextMarkers,
-    // });
-  }
 
   handleDialogClose = () => {
     this.setState({ dialog: {...this.state.dialog, open: false}})
@@ -261,6 +249,7 @@ handleCloseClick(targetMarker) {
       this.setState({
         markers: dropMarkers,
     });
+    this.setState({ center: nextProps.center, showInfo: false, })
     }
 
 
@@ -301,7 +290,6 @@ handleCloseClick(targetMarker) {
           mapElement={
             <div style={{ height: `75vh` }} />
           }
-          onMapLoad={this.handleMapLoad}
           onMapClick={this.handleMapClick}
           markers={this.state.markers}
           onMarkerRightClick={this.handleMarkerRightClick}

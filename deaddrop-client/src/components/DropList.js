@@ -46,7 +46,6 @@ const DropList = (props) => {
       <Paper className={classes.noDropsPaper}>
 
         <Typography component="span">
-
           There are no marked drops, add one to the map.
         </Typography>
 
@@ -62,7 +61,7 @@ const DropList = (props) => {
           drops.map(drop => {
             const createdAt = new Date(drop.createdAt)
             return (
-          <ListItem button>
+          <ListItem button data-dropid={drop.id} data-lat={drop.lat} data-lng={drop.lng} onClick={(e) => props.handleDropItemClick(e)}>
             <ListItemText primary={drop.title} secondary={`Created: ${createdAt.toDateString()}`} />
             <ListItemSecondaryAction>
               <IconButton aria-label="Info">
