@@ -3,7 +3,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import agent from '../agent';
+import PropTypes from 'prop-types';
+import { withStyles, createStyleSheet } from 'material-ui/styles';
 import Button from 'material-ui/Button';
+import TextField from 'material-ui/TextField';
 import Dialog, {
   DialogActions,
   DialogContent,
@@ -12,17 +15,25 @@ import Dialog, {
 } from 'material-ui/Dialog';
 
 
+const styleSheet = createStyleSheet(theme => ({
+  textField: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+    width: 200,
+  },
+}));
+
 
 const mapDispatchToProps = dispatch => ({
-  onClick: (payload, dropId) =>
-    dispatch({ type: 'DELETE_DROP', payload, dropId})
+  onClick: (payload) =>
+    dispatch({ type: 'CREATE_DROP', payload })
 });
 
 
 
-const AlertDialog = (props) => {
-  const del = () => {
-    const payload = agent.Drops.del(props.activeMarker.key);
+const AddDropForm = (props) => {
+  const create = (drop) => {
+    const payload = agent.Drops.create(drop);
     props.onClick(payload, props.activeMarker.key)
     props.handleDialogClose();
   }
@@ -33,9 +44,18 @@ const AlertDialog = (props) => {
         {props.title}
       </DialogTitle>
       <DialogContent>
-        <DialogContentText>
-          {props.content}
-        </DialogContentText>
+        <TextField
+          id="title"
+          label="Title"
+          className={classes.textField}
+          margin="normal"
+        />
+        <TextField
+          id="title"
+          label="Title"
+          className={classes.textField}
+          margin="normal"
+        />
       </DialogContent>
       <DialogActions>
         <Button onClick={props.handleDialogClose} color="primary">
@@ -49,4 +69,4 @@ const AlertDialog = (props) => {
   );
 }
 
-export default connect(() => ({}), mapDispatchToProps)(AlertDialog);
+export default connect(() => ({}), mapDispatchToProps)(AddDropForm);
