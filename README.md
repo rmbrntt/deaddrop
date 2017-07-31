@@ -4,24 +4,23 @@ deaddrop is a service to signal hidden drops at physical locations.
 ## JSON Objects
 
 ### Drop
+```
 {
     "drop": {
-        "lng": "67.2352000",
-        "lat": "98.6200000",
+        "lng": "-75.1649150",
+        "lat": "39.9427520",
         "agent": {
-            "username": "cadence1",
-            "headline": "",
-            "image": "http://localhost/images/avatar.jpg"
+            "username": "ryanbarnett",
+            "headline": ""
         },
-        "title": "Bear snatches honey",
-        "description": "yeah yeah yeah, it's that time",
-        "createdAt": "2017-07-28T03:31:09.537994+00:00",
-        "updatedAt": "2017-07-28T04:15:45.840828+00:00",
-        "id": "fde40f17-dcc6-43fa-9fb8-4db393f5c9d7",
-        "signal": "towel in window",
-        "covert_message": "meet me at the cafe"
+        "title": "Cat Fact 46",
+        "createdAt": "2017-07-31T18:43:09.895978+00:00",
+        "updatedAt": "2017-07-31T18:43:09.896066+00:00",
+        "id": "e1394b17-1abc-4c76-bb95-8bea47e6ffc8",
+        "message": "Cats can change their meow to manipulate a human. They often imitate a human baby when they need food, for example.",
     }
 }
+```
 
 ## API Endpoints
 ### `POST` `/api/register`

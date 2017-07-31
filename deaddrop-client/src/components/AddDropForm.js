@@ -15,11 +15,12 @@ import Dialog, {
 } from 'material-ui/Dialog';
 
 
-const styleSheet = createStyleSheet(theme => ({
+const styleSheet = createStyleSheet('AddDropForm', theme => ({
   textField: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
     width: 200,
+    display: "block",
   },
 }));
 
@@ -39,29 +40,31 @@ const AddDropForm = (props) => {
   }
 
   return (
-    <Dialog open={props.open} onRequestClose={props.handleDialogClose}>
+    <Dialog open={props.open} onRequestClose={props.handleAddDropFormClose}>
       <DialogTitle>
-        {props.title}
+        Add a new drop location.
       </DialogTitle>
       <DialogContent>
         <TextField
           id="title"
           label="Title"
-          className={classes.textField}
+          className={props.classes.textField}
           margin="normal"
         />
         <TextField
-          id="title"
-          label="Title"
-          className={classes.textField}
+          id="message"
+          label="Message"
+          multiline
+          rowsMax="4"
+          className={props.classes.textField}
           margin="normal"
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={props.handleDialogClose} color="primary">
+        <Button onClick={props.handleAddDropFormClose} color="primary">
           Disagree
         </Button>
-        <Button onClick={del} color="primary">
+        <Button onClick={create} color="primary">
           Agree
         </Button>
       </DialogActions>
@@ -69,4 +72,4 @@ const AddDropForm = (props) => {
   );
 }
 
-export default connect(() => ({}), mapDispatchToProps)(AddDropForm);
+export default connect(() => ({}), mapDispatchToProps)(withStyles(styleSheet)(AddDropForm));
