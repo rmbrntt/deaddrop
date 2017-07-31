@@ -17,7 +17,7 @@ import {
   Circle
 } from "react-google-maps";
 import canUseDOM from "can-use-dom";
-
+import AddDropForm from './AddDropForm';
 
 
 
@@ -93,9 +93,7 @@ export default class Map extends Component {
       title: "",
       content: "",
     },
-    addDropForm: {
-      open: false,
-    }
+    addDropFormOpen: false,
   }
 
   isUnmounted = false;
@@ -108,24 +106,28 @@ export default class Map extends Component {
 
 
   handleMapClick(event) {
-    const nextMarkers = [
-      ...this.state.markers,
-      {
-        position: event.latLng,
-        defaultAnimation: 2,
-        key: Date.now(),
-        title: "title",
-        message: "just another drop",
-        showInfo: false,
-      },
-    ];
-    this.setState({
-      markers: nextMarkers,
-    });
+    console.log(event.latLng.lat())
+    console.log(event.latLng.lng())
 
-    if (nextMarkers.length === 3) {
-      this.setState({ snackbarOpen: true, snackbarMessage: 'Right click a marker to delete.' })
-    }
+    // const nextMarkers = [
+    //   ...this.state.markers,
+    //   {
+    //     position: event.latLng,
+    //     defaultAnimation: 2,
+    //     key: Date.now(),
+    //     title: "title",
+    //     message: "just another drop",
+    //     showInfo: false,
+    //   },
+    // ];
+    // this.setState({
+    //   markers: nextMarkers,
+    // });
+    //
+    // if (nextMarkers.length === 3) {
+    //   this.setState({ snackbarOpen: true, snackbarMessage: 'Right click a marker to delete.' })
+    // }
+    this.setState({ addDropFormOpen: true })
   }
 
   handleMarkerRightClick(targetMarker) {
@@ -177,6 +179,10 @@ handleCloseClick(targetMarker) {
     this.setState({ dialog: {...this.state.dialog, open: false}})
   };
 
+  handleAddDropFormClose = () => {
+    this.setState({ addDropFormOpen: false })
+  };
+
   componentDidMount() {
     geolocation.getCurrentPosition((position) => {
       if (this.isUnmounted) {
@@ -189,7 +195,7 @@ handleCloseClick(targetMarker) {
         },
         snackbarOpen: true,
         snackbarMessage: 'Location found.',
-        content: "You."
+        content: "You're here."
       });
 
 
@@ -255,6 +261,10 @@ handleCloseClick(targetMarker) {
           activeMarker={this.state.activeMarker}
           handleDialogClose={this.handleDialogClose}
         />
+        <AddDropForm
+          open={this.state.addDropFormOpen}
+          handleAddDropFormClose={this.handleAddDropFormClose}
+         />
         <AsyncGoogleMap
           googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${config.GOOGLE_MAPS_API_KEY}`}
           loadingElement={
