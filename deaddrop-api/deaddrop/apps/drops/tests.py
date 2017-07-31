@@ -44,7 +44,6 @@ class DropDetailTests(APITestCase):
             agent=self.profile
         )
 
-
     def test_put_drop(self):
         id = str(self.drop_catfact.id)
         response = self.client.put(reverse("drops:drop-detail", kwargs={'id': id}),
