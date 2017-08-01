@@ -155,6 +155,12 @@ export default class Map extends Component {
           showInfo: true,
         };
       }
+      else if (marker !== targetMarker) {
+          return {
+            ...marker,
+            showInfo: false,
+          };
+      }
       return marker;
     }),
   });
@@ -237,7 +243,29 @@ handleCloseClick(targetMarker) {
       this.setState({
         markers: dropMarkers,
     });
-    this.setState({ center: nextProps.center, showInfo: false, })
+    if (!!this.props.center){
+      if (nextProps.centerId !== this.props.centerId){
+        this.setState({
+          markers: this.state.markers.map(marker => {
+            if (marker.key === nextProps.centerId) {
+              return {
+                ...marker,
+                showInfo: true,
+              };
+            }
+            else {
+              return {
+                ...marker,
+                showInfo: false,
+              };
+            }
+            return marker;
+          }),
+        });
+      }
+    }
+    this.setState({ center: nextProps.center, showInfo: false, centerId: nextProps.centerId})
+
     }
 
 
