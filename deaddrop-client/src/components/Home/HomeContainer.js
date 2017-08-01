@@ -30,7 +30,8 @@ const mapDispatchToProps = dispatch => ({
 
 class HomeContainer extends React.Component {
   state = {
-    center: null
+    center: null,
+    centerId: null
   }
 
   componentWillMount() {
@@ -41,7 +42,9 @@ class HomeContainer extends React.Component {
     const ele = (e.target).closest("li");
     const lat = ele.attributes.getNamedItem('data-lat').value;
     const lng = ele.attributes.getNamedItem('data-lng').value;
-    this.setState({ center: { lat: parseFloat(lat), lng: parseFloat(lng) }})
+    const dropid = ele.attributes.getNamedItem('data-dropid').value;
+
+    this.setState({ center: { lat: parseFloat(lat), lng: parseFloat(lng)}, centerId: dropid})
   }
 
   render(){
@@ -49,7 +52,7 @@ class HomeContainer extends React.Component {
     return (
       <div className={classes.root}>
         <HomeSplash appName={this.props.appName} />
-        <HomeView drops={this.props.drops} handleDropItemClick={(e) => this.handleDropItemClick(e)} center={this.state.center}/>
+        <HomeView drops={this.props.drops} handleDropItemClick={(e) => this.handleDropItemClick(e)} center={this.state.center} centerId={this.state.centerId}/>
       </div>
     );
   }

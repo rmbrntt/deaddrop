@@ -29,7 +29,7 @@ const HomeView = (props) => {
       </Grid>
       <Grid item xs={18} sm={9}>
         <Paper className={props.classes.paperRight} elevation={10}>
-          <Map drops={props.drops} center={props.center}/>
+          <Map drops={props.drops} center={props.center} centerId={props.centerId}/>
         </Paper>
       </Grid>
     </Grid>

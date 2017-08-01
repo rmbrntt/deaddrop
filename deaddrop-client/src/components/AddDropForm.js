@@ -73,14 +73,6 @@ class AddDropForm extends Component {
     console.log(nextProps)
   }
 
-  componentWillMount(){
-    this.props.onLoad(null);
-  }
-
-  componentWillUnmount(){
-    this.props.onUnload();
-  }
-
   render() {
     return (
       <Dialog open={this.props.open} onRequestClose={this.props.handleAddDropFormClose}>
