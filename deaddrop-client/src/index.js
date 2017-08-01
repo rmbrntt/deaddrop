@@ -12,6 +12,12 @@ import { promiseMiddleware } from './middleware';
 const defaultState = {
   appName: 'deaddrop',
   drops: null,
+  drop: {
+    title: '',
+    message: '',
+    lat: null,
+    lng: null
+  }
 };
 
 const reducer = function(state = defaultState, action) {
@@ -20,10 +26,22 @@ const reducer = function(state = defaultState, action) {
       return {...state, drops: action.payload.drops };
     case 'DELETE_DROP':
       return {...state, drops: state.drops.filter(drop => drop.id !== action.dropId)};
-    case 'UPDATE_DROP':
-      return;
-    case 'CREATE_DROP':
+    case 'SUBMIT_DROP':
       return {...state, drops: (state.drops || []).concat([action.payload.drop])};
+    case 'UPDATE_FIELD_DROP_FORM':
+      console.log(state)
+      return { ...state, [action.key]: action.value };
+    case 'DROP_FORM_LOADED':
+      return {
+        ...state,
+        dropId: action.payload ? action.payload.drop.id : '',
+        title: action.payload ? action.payload.title : '',
+        message: action.payload ? action.payload.message : ''
+      }
+    case 'DROP_FORM_UNLOADED':
+      return {
+
+      }
   }
   return state;
 };

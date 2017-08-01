@@ -7,8 +7,8 @@ class DropSerializer(serializers.ModelSerializer):
 
     agent = ProfileSerializer(read_only=True)
     id = serializers.UUIDField(required=False)
-    lat = serializers.DecimalField(max_digits=9, decimal_places=7)
-    lng = serializers.DecimalField(max_digits=10, decimal_places=7)
+    lat = serializers.DecimalField(max_digits=100, decimal_places=50)
+    lng = serializers.DecimalField(max_digits=100, decimal_places=50)
     createdAt = serializers.SerializerMethodField(method_name='get_created_at')
     updatedAt = serializers.SerializerMethodField(method_name='get_updated_at')
     dropsCount = serializers.SerializerMethodField(method_name='get_drops_count')
