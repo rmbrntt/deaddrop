@@ -94,6 +94,10 @@ export default class Map extends Component {
       content: "",
     },
     addDropFormOpen: false,
+    activeDropMarker: {
+      lat: null,
+      lng: null
+    }
   }
 
   isUnmounted = false;
@@ -127,7 +131,7 @@ export default class Map extends Component {
     // if (nextMarkers.length === 3) {
     //   this.setState({ snackbarOpen: true, snackbarMessage: 'Right click a marker to delete.' })
     // }
-    this.setState({ addDropFormOpen: true })
+    this.setState({ addDropFormOpen: true, activeDropMarker: { lat: event.latLng.lat(), lng: event.latLng.lng()} })
   }
 
   handleMarkerRightClick(targetMarker) {
@@ -264,6 +268,8 @@ handleCloseClick(targetMarker) {
         <AddDropForm
           open={this.state.addDropFormOpen}
           handleAddDropFormClose={this.handleAddDropFormClose}
+          lat={this.state.activeDropMarker.lat}
+          lng={this.state.activeDropMarker.lng}
          />
         <AsyncGoogleMap
           googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${config.GOOGLE_MAPS_API_KEY}`}

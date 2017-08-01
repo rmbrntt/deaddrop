@@ -32,8 +32,8 @@ const Drops = {
   get: id =>
     requests.get(`/drops/${id}`),
   create: drop =>
-    requests.post(`/drops`, { drop }),
-  update: drop =>
+    requests.post(`/drops`, { drop: drop }),
+  update: (drop) =>
     requests.put(`/drops/${drop.id}`, { drop: omitId(drop)}),
   del: dropId =>
     requests.del(`/drops/${dropId}`)
